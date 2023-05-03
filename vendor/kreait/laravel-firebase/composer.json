@@ -1,0 +1,54 @@
+{
+    "name": "kreait/laravel-firebase",
+    "description": "A Laravel package for the Firebase PHP Admin SDK",
+    "keywords": ["laravel", "firebase", "fcm", "gcm"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jérôme Gamez",
+            "email": "jerome@gamez.name"
+        }
+    ],
+    "require": {
+        "php": "^7.2|^8.0",
+        "kreait/firebase-php": "^5.24",
+        "illuminate/contracts": "^6.0|^7.0|^8.0",
+        "illuminate/support": "^6.0|^7.0|^8.0",
+        "symfony/cache": "^5.4|^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0|^5.0|^6.0",
+        "friendsofphp/php-cs-fixer": "^2.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kreait\\Laravel\\Firebase\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kreait\\Laravel\\Firebase\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "3.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Kreait\\Laravel\\Firebase\\ServiceProvider"
+            ],
+            "aliases": {
+                "Firebase": "Kreait\\Laravel\\Firebase\\Facades\\Firebase",
+                "FirebaseAuth": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseAuth",
+                "FirebaseDatabase": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseDatabase",
+                "FirebaseDynamicLinks": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseDynamicLinks",
+                "FirebaseFirestore": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseFirestore",
+                "FirebaseMessaging": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseMessaging",
+                "FirebaseRemoteConfig": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseRemoteConfig",
+                "FirebaseStorage": "Kreait\\Laravel\\Firebase\\Facades\\FirebaseStorage"
+            }
+        }
+    }
+}
