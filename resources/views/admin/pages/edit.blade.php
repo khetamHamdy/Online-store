@@ -1,5 +1,6 @@
 @extends('layout.adminLayout')
-@section('title') {{ucwords(__('cp.pages'))}}
+@section('title')
+    {{ucwords(__('cp.pages'))}}
 @endsection
 @section('css')
 
@@ -11,7 +12,6 @@
 
 @endsection
 @section('content')
-
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Subheader-->
@@ -44,23 +44,53 @@
                         {{ csrf_field() }}
                         {{ method_field('PATCH')}}
                         <div class="card-header">
-                            <h3 class="card-title">{{__('cp.main_data')}}</h3>
+                            <h3 class="card-title">{{$item->title}}</h3>
                         </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                        @foreach($locales as $locale)
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>{{__('cp.description_'.$locale->lang)}}</label>
-                                                    <textarea class="form-control kt-tinymce-4"                                                              {{($locale->lang == 'ar') ? 'dir=rtl' :'' }} name="description_{{$locale->lang}}"
-                                                              id="order" rows="4" required>{!! @$item->translate($locale->lang)->description!!}</textarea>
-                                                </div>
-                                            </div>
-                                         @endforeach
-
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach($locales as $locale)
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{__('cp.title')}} <span
+                                                    class="text-danger"> {{$locale->name}} <span></label>
+                                            <input class="form-control "
+                                                   {{($locale->lang == 'ar') ? 'dir=rtl' :'' }} name="title_{{$locale->lang}}"
+                                                   required value="{!! @$item->translate($locale->lang)->title!!}"/>
                                         </div>
                                     </div>
+                                @endforeach
+                                @foreach($locales as $locale)
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{__('cp.description')}} <span class="text-danger"> {{$locale->name}} <span></label>
+                                            <textarea class="form-control ckEditor-y"
+                                                      {{($locale->lang == 'ar') ? 'dir=rtl' :'' }} name="description_{{$locale->lang}}"
+                                                      id="order" rows="4"
+                                                      required>{!! @$item->translate($locale->lang)->description!!}</textarea>
+                                        </div>
+                                    </div>
+                                @endforeach
 
+                                <div class="col-md-6">
+                                    <div class="fileinputForm">
+                                        <label>{{__('cp.image')}}</label>
+                                        <div class="fileinput-new thumbnail"
+                                             onclick="document.getElementById('edit_image4').click()"
+                                             style="cursor:pointer">
+                                            <img src="{{$item->image}}" id="editImage4">
+                                        </div>
+                                        <div class="btn btn-change-img red"
+                                             onclick="document.getElementById('edit_image4').click()">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </div>
+                                        <input type="file" class="form-control" name="image"
+                                               id="edit_image4"
+                                               style="display:none">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
 
 
                         <button type="submit" id="submitForm" style="display:none"></button>
@@ -73,12 +103,26 @@
         <!--end::Entry-->
     </div>
 
-
 @endsection
 @section('js')
-    <script src="{{asset('/admin_assets/plugins/custom/tinymce/tinymce.bundle.js')}}"></script>
-    <script src="{{asset('/admin_assets/js/pages/crud/forms/editors/tinymce.js')}}"></script>
-
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/super-build/ckeditor.js"></script>
+    <script>
+        @include('admin.settings.editor_script')
+    </script>
+    <script>
+        $('#edit_image1').on('change', function (e) {
+            readURL(this, $('#editImage1'));
+        });
+        $('#edit_image2').on('change', function (e) {
+            readURL(this, $('#editImage2'));
+        });
+        $('#edit_image3').on('change', function (e) {
+            readURL(this, $('#editImage3'));
+        });
+        $('#edit_image4').on('change', function (e) {
+            readURL(this, $('#editImage4'));
+        });
+    </script>
 @endsection
 
 @section('script')

@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -19,13 +21,28 @@ class LoginController extends Controller
     |
     */
 
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
+    {
+        return view('website.auth.login');
+    }
+
     use AuthenticatesUsers;
+
     public function login(Request $request)
     {
-        $this->validateLogin($request);
-        $user = User::where('email',$request->email)->first();
-        if($user){
-            if($user->status != 'active'){
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            if ($user->status != 'active') {
                 $message = (app()->getLocale() == "ar") ? 'الحساب غير مفعل' : 'The account not active';
                 return redirect()->back()->withErrors([$message]);
             }
@@ -49,6 +66,7 @@ class LoginController extends Controller
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
+
     }
 
     /**
@@ -67,4 +85,23 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
+
+    }
+
 }

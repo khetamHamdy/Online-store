@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>{{__('cp.Login_Into_Panel')}}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-     <link rel="icon" href="{{@$setting->favicon}}">
+     <link rel="icon" href="{{@$setting->fav_icon}}">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;800&display=swap" rel="stylesheet">
 
 	<style>
@@ -221,7 +221,7 @@
       </div>
       <div class="login-container bg-white">
         <div class="logoLogin">
-          <img src="{{@$setting->favicon}}" style="width:70px ; hight:70px;" alt="logo">
+          <img src="{{@$setting->fav_icon}}" style="width:70px ; hight:70px;" alt="logo">
 
           <p class="titleLog">{{__('cp.Login_Into_Panel')}}</p>
           @if (count($errors) > 0)

@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\API\v1\DeliveryController;
 use Illuminate\Http\Request;
 
+
+Route::put('deliveries/{delivery}', [DeliveryController::class,'update']);
+Route::get('deliveries/{delivery}', [DeliveryController::class,'show']);
 Route::group(['middleware' => 'auth:api'], function () {
 
 ////////////////////////////////  UserController   ///////////////////////////////////
@@ -59,8 +63,3 @@ Route::post('checkPromoCode', 'API\v1\CartController@checkPromoCode');
 Route::post('storeOrder', 'API\v1\CartController@storeOrder');
 Route::get('orderDetails/{id}', 'API\v1\CartController@orderDetails');
 Route::get('/reOrder', 'API\v1\CartController@reOrder')->name('reOrder');
-
-
-
-
-

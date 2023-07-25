@@ -12,6 +12,68 @@
 @section('content')
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+
+
+     <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header border-0">
+                <div class="d-flex  justify-content-between">
+                  <h3 class="card-title">Order Count</h3>
+                  <a href="{{url(getLocal().'/admin/orders')}}">View Report</a>
+                </div>
+              </div>
+              <div class="card-body">
+
+                <div class="position-relative mb-4">
+                  <canvas id="visitors-chart" height="300"></canvas>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <!-- /.col-md-6 -->
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                  <h3 class="card-title">Sales</h3>
+
+                    <div>
+
+                      <select class="form-control" id="select_year">
+                        <option class="2023">2023</option>
+                        <option class="2022">2022</option>
+                        <option class="2021">2021</option>
+
+                      </select>
+                    </div>
+
+                </div>
+              </div>
+              <div class="card-body">
+
+                <div class="position-relative mb-4">
+                  <canvas id="sales-chart" height="300"></canvas>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+
+
         <!--begin::Subheader-->
         <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
             <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -60,29 +122,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6 col-xl-4 mb-5">
-                                                    <!--begin::Iconbox-->
-                                                    <div class="card card-custom wave wave-animate-fast">
-                                                        <div class="card-body">
-            												<span class="svg-icon svg-icon-2x svg-icon-dark">
-                 										     	<svg xmlns="http://www.w3.org/2000/svg"
-                                                                 xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                                                 viewBox="0 0 24 24" version="1.1">
-                                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                                        <rect x="0" y="0" width="24" height="24"/>
-                                                                        <rect fill="#2791bb66" opacity="0.3" x="2" y="5" width="20" height="14" rx="2"/>
-                                                                        <rect fill="#2791bb66" x="2" y="8" width="20" height="3"/>
-                                                                        <rect fill="#2791bb66" opacity="0.3" x="16" y="14" width="4" height="2" rx="1"/>
-                                                                    </g>
-                                                                </svg>
-             												</span>
-                                                            <span
-                                                                class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{$vendors_count}}</span>
-                                                            <span
-                                                                class="font-weight-bold text-muted font-size-sm">{{__('cp.vendors_count')}}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                                 <div class="col-lg-6 col-xl-4 mb-5">
                                                     <div class="card card-custom wave wave-animate-fast">
                                                         <div class="card-body">
@@ -372,7 +412,6 @@
         </div>
 
 
-
         @endsection
 
 
@@ -381,5 +420,45 @@
 @endsection
 
 @section('script')
+<script>
+    let sales_data=JSON.parse('{!! json_encode($monthsTotal) !!}')
+    let count_order=JSON.parse('{!! json_encode($monthsCount) !!}')
+</script>
+<!-- OPTIONAL SCRIPTS -->
+<script src="{{asset('admin_assets/plugins/chart.js/Chart.min.js') }}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="{{asset('admin_assets/dist/js/pages/dashboard3.js') }}"></script>
 
+<script>
+    $('#select_year').on('change',function(){
+        let year =$(this).val();
+        confirm('i am sure ?? ')
+          $.ajax({
+                    url: "{{ route('admin.getData')}}",
+                    type: 'GET',
+                    dataType: 'json',
+                    data:{
+                        year:year
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN':'{{csrf_token()}}',
+                    },
+                    success: function(data) {
+
+                        salesChart.data.datasets[0].data=data.monthsTotal;
+                        salesChart.update();
+
+                        visitorsChart.data.datasets[0].data=data.monthsCount;
+                        visitorsChart.update();
+
+                        // myChart.data.labels = data.labels;
+                        // myChart.data.datasets[0].data = data.data;
+                        // myChart.update();
+                    },
+                    error: function(data){
+                        console.log(data);
+                    }
+          });
+    });
+</script>
 @endsection

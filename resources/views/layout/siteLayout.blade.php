@@ -1,109 +1,233 @@
 <!DOCTYPE html>
-<html 
-@if(app()->getLocale() == 'ar')
-lang="ar" dir="rtl">
+<html @if(app()->getLocale() == 'ar')
+lang="ar" dir="rtl"
 @else
-lang="en" dir="ltr">
+lang="en" dir="ltr"
 @endif
+>
+
 <head>
- <!-- Global site tag (gtag.js) - Google Analytics --> 
-<script async 
-src="https://www.googletagmanager.com/gtag/js?id=G-PN4W1TBCSH"></script> 
-<script> 
-  window.dataLayer = window.dataLayer || []; 
-  function gtag(){dataLayer.push(arguments);} 
-  gtag('js', new Date()); 
-  gtag('config', 'G-PN4W1TBCSH'); 
-</script>
-<!-- end:: Global site tag (gtag.js) - Google Analytics -->    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title> @yield('title')</title>
+    <title>Collab KW</title>
     <!-- Stylesheets -->
-    <link rel="icon" href="{{@$setting->favicon}}">
+    <link rel="icon" href="{{$setting->fav_icon}}">
     <link href="{{asset('website/css/style.css')}}" rel="stylesheet">
     <!-- Responsive -->
     <link href="{{asset('website/css/responsive.css')}}" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <!--[if lt IE 9]>
+    <script src="{{asset('website/js/respond.js')}}"></script><![endif]-->
     <script src="{{asset('website/js/jquery-3.2.1.min.js')}}"></script>
-    @if(app()->getLocale() == 'ar')
-		 <link href="{{asset('website/css/rtl.css')}}" rel="stylesheet" type="text/css" />
-	@endif
+    <style>
+    :root {
+        --main-color: <?php echo $setting->color_webSite;
+        ?>;
+    }
+    </style>
 </head>
 @yield('css')
+@include('sweetalert::alert')
+<livewire:styles />
+<livewire:scripts />
+
 <body>
+
     <div class="main-wrapper">
+
+
         <header id="header">
-            <div class="container-fluid">
-                <div class="logo-site">
-                    <a href="{{route('home')}}">
-                        <img class="logo-web" src="{{asset('website/images/logo.svg')}}" alt="" />
-                        <img class="logo-mobail" src="{{asset('website/images/logo-mobail.svg')}}" alt="" />
-                    </a>
-                </div>
-                <div class="main_menu">
-                    <ul class=" clearfix">
-                        <li class="active"><a class="page-scroll" href="{{route('home')}}">{{__('web.Home')}}</a></li>
-                        <li><a class="page-scroll" href="{{route('about')}}">{{__('web.AboutUs')}}</a></li>
-                        <li><a class="page-scroll" href="{{route('services')}}">{{__('web.OurServices')}}</a></li>
-                        <li><a class="page-scroll" href="{{route('projects')}}">{{__('web.OurProjects')}}</a></li>
-                        <li><a class="page-scroll" href="{{route('chairman')}}">{{__('web.MessageFromChairman')}}</a></li>
-                        <li><a class="page-scroll" href="{{route('team')}}">{{__('web.OurTeam')}}</a></li>
-                        <li><a class="page-scroll" href="{{route('partners')}}">{{__('web.OurPartners')}}</a></li>
-                        <li><a class="page-scroll" href="{{route('contact')}}">{{__('web.ContactUs')}}</a></li>
-                        <li class="lang-site">@if(getLocal() == 'en') <a class="page-scroll" href="{{ LaravelLocalization::getLocalizedURL('ar', null, [], true) }}" >العربية</a>
-					@else <a class="page-scroll" href="{{ LaravelLocalization::getLocalizedURL('en', null, [], true) }}" >English</a> @endIf</li>
-                    </ul>
-                    <div class="thumb-menu">
-                        <img src="{{asset('website/images/thumb-menu.png')}}" alt="" />
+            <div class="container">
+                <div class="hd-left">
+                    <div class="logo-site">
+                        <a href="{{route('home')}}">
+                            <h4>{{$setting->title}}</h4>
+                        </a>
+                    </div>
+                    <div class="deliver-hd">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <a href="">
+                            <span>{{__('cp.deliver_to')}}</span>
+                            {{$setting->Delivery_company_name}}
+                        </a>
+                    </div>
+                    <div class="lang-site">
+                        <a href="index.blade.php" class="page-scroll">
+                            <i class="fa-solid fa-globe"></i>
+                            العربية
+                        </a>
                     </div>
                 </div>
+                <div class="search-hd">
+                    <form class="form-search" method="get" action="{{route('search.products')}}">
+                        <i class="fa-solid fa-magnifying-glass">
+                            <button type="button"></button>
+                        </i>
+                        <input type="text" value="{{old('title')}}" name="title" class="form-control"
+                            placeholder="{{__('cp.SearchHere')}}" />
+                    </form>
+                </div>
+
+                <ul class="main_menu clearfix">
+                    <li>
+                        <form action="{{route('currency.store')}}" method="post">
+                            @csrf
+                            <div class="form-group">
+                                <select class="form-control" name="currency_code" onchange="this.form.submit()">
+                                    <option value="USD" @selected('USD', session('currency_code') )>USD $</option>
+                                    <option value="EUR" @selected('EUR', session('currency_code') )>EUR €</option>
+                                    <option value="GBP" @selected('GBP', session('currency_code') )>GBP £</option>
+                                    <option value="JPY" @selected('JPY', session('currency_code') )>JPY ¥</option>
+                                </select>
+                            </div>
+
+                        </form>
+
+                    </li>
+
+
+                    <li class="lang-site">
+
+                        @if(getLocal() == 'en')
+                        <a class="page-scroll" href="{{ LaravelLocalization::getLocalizedURL('ar', null, [], true) }}">
+                            <i class="fa-solid fa-globe"></i>
+                            العربية
+                        </a>
+                        @else
+                        <a class="page-scroll" href="{{ LaravelLocalization::getLocalizedURL('en', null, [], true) }}">
+                            <i class="fa-solid fa-globe"></i>
+                            English</a>
+                        @endIf
+                    </li>
+                    @guest()
+                    <li>
+                        <a class="page-scroll" href="{{ route('login.form') }}">
+                            <i class="fa-regular fa-user"></i>
+                            Login / Sign Up
+                        </a>
+
+
+                    </li>
+                    @endguest
+
+                    @auth('web')
+                    <li>
+                        <a class="page-scroll" href="{{ route('profile') }}">
+                            <i class="fa-regular fa-user"></i>
+                            {{Auth('web')->user()->user_name}}
+                        </a>
+                    </li>
+                    @endauth
+
+                    <li>
+
+                        <a class="page-scroll" href="{{route('cart.index')}}">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            {{__('cp.cart')}}
+
+                            <livewire:cart-counter>
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+
+
+
                 <div class="opt-mobail">
-                    <div class="contact-quote">
-                        <a href="#sectionQuote"><i class="fa-solid fa-quote-left"></i> <span>{{__('web.GetQuote')}}</span></a>
-                    </div>
-                    <button type="button" class="hamburger">
-                        <span class="hamb-top"></span>
-                        <span class="hamb-middle"></span>
-                        <span class="hamb-bottom"></span>
-                    </button>
+                    <ul>
+                        {{-- <li class="hamburger">--}}
+                        <option>GBP £</option>
+                        {{-- <i class="fa-solid fa-bars"></i>--}}
+                        {{-- <p>More</p>--}}
+                        {{-- </li>--}}
+                        <li class="user">
+                            <a href="{{ route('login.form') }}">
+                                <i class="fa-solid fa-user"></i>
+                                <p>{{__('cp.login')}}</p>
+                            </a>
+                        </li>
+                        <li class="cart">
+                            <a href="{{route('cart.index')}}">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                <p>{{__('cp.cart')}}</p>
+                            </a>
+                        </li>
+                        <li class="home active">
+                            <a href="{{route('home')}}">
+                                <i class="fa-solid fa-house"></i>
+                                <p>{{__('cp.home')}}</p>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </header>
         <!--header-->
+        @include('sweetalert::alert')
+
         @yield('content')
-        @yield('quote')
 
-        <!-- //todo 
-        Google  reCAPTCHA -->
-        
-
-        <!--section_quote-->
         <footer id="footer">
             <div class="top-footer">
-                <div class="container-fluid">
+                <div class="container">
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="cont-ft wow fadeInUp">
                                 <figure class="logo-ft wow fadeInUp">
-                                    <img src="{{asset('website/images/logo.svg')}}" alt="Logo" class="img-fluid">
+                                    <img src="{{asset($setting->app_logo)}}" alt="Logo" class="img-fluid">
                                 </figure>
+                                <ul class="social-media">
+                                    <li><a href="{{ $setting->facebook }}"><i class="fa-brands fa-facebook-f"></i></a>
+                                    </li>
+                                    <li><a href="{{$setting->twitter}}"><i class="fa-brands fa-twitter"></i></a></li>
+                                    <li><a href="{{$setting->instagram}}"><i class="fa-brands fa-instagram"></i></a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="txt-copy text-center">
-                                <p class="copyRight wow fadeInUp">© <?php echo date('Y'); ?> 88CLICKS {{__('web.AllRightsReserved')}} .</p>
+                        <div class="col-lg-3 col-6">
+                            <div class="menu-ft">
+                                <h5>{{__('cp.UsefulLinks')}}</h5>
+                                <ul class="li-ft wow fadeInUp">
+                                    <li><a href="{{ route('pages', 'about-us') }}">{{__('cp.AboutUs')}}</a></li>
+                                    <li><a href="{{ route('pages', 'contact-us') }}">{{__('cp.ContactUs')}}</a></li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <ul class="list-social wow fadeInUp">
-                            @if($setting->facebook != '')    <li><a href="{{$setting->facebook}}" target="_blank"><i class="fa-brands fa-facebook"></i></a></li> @endIf
-                            @if($setting->twitter != '')    <li><a href="{{$setting->twitter}}" target="_blank"><i class="fa-brands fa-twitter"></i></a></li>@endIf
-                            @if($setting->instagram != '')    <li><a href="{{$setting->instagram}}" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>@endIf
-                            @if($setting->linkedin != '')    <li><a href="{{$setting->linkedin}}" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a></li>@endIf
-                            @if($setting->behance != '')    <li><a href="{{$setting->behance}}" target="_blank"><i class="fa-brands fa-behance"></i></a></li>@endIf
-                            @if($setting->vimeo != '')    <li><a href="{{$setting->vimeo}}" target="_blank"><i class="fa-brands fa-vimeo-v"></i></a></li>@endIf
-                            </ul>
+                        <div class="col-lg-3 col-6">
+                            <div class="menu-ft">
+                                <h5>{{__('cp.terms')}}</h5>
+                                <ul class="li-ft wow fadeInUp">
+                                    <li><a href="{{ route('pages', 'terms-of-use') }}">{{__('cp.TAC')}}</a></li>
+                                    <li><a href="{{ route('pages', 'privacy-policy') }}">{{__('cp.PrivacyPolicy')}}</a>
+                                    </li>
+                                    <li><a
+                                            href="{{ route('pages', 'return_policy_page') }}">{{__('cp.ReturnPolicy')}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="menu-ft">
+                                <h5>{{__('cp.contact')}}</h5>
+                                <ul class="list-contact wow fadeInUp">
+                                    <li>
+                                        <p>
+                                            {{$setting->description_contact}}
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <a href="mailto:info@collabekw.com">
+                                            {{$setting->info_email}}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -111,99 +235,53 @@ src="https://www.googletagmanager.com/gtag/js?id=G-PN4W1TBCSH"></script>
             <div class="bottom-ft">
                 <div class="container">
                     <div class="cont-bt">
-                        <p>{{__('web.PoweredBy')}} <a href="https://linekw.com/" target="_blank">Line</a></p>
+                        <p class="copyRight wow fadeInUp">Copyright © 2023 CollabKW - All Rights Reserved</p>
+                        <p>Powered By <a href="https://hexacit.com/">HexaCIT</a></p>
                     </div>
+
                 </div>
             </div>
         </footer>
         <!--footer-->
-        <div class="contact-quote wow fadeInUp">
-            <a href="#sectionQuote"><i class="fa-solid fa-quote-left"></i> <span>{{__('web.GetQuote')}}</span></a>
-        </div>        
-        <div class="contact-chat wow fadeInUp">
-            <a href=""><i class="fa-solid fa-comment-dots"></i> <span>{{__('web.ChatWithUs')}}</span></a>
-        </div>        
-        <!-- Modal -->
-        <div class="modal fade" id="modalSuccess" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <button type="button" class="closeModal" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-                    <div class="modal-body ms-succ">
-                        <strong>{{__('web.Success')}}</strong>
-                        <figure class="ico-che"><img src="{{asset('website/images/Success.png')}}" alt="" /></figure>
-                        <p>{{__('web.The Quote has been submitted successfully. Our team contact you soon')}}.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-       
+        @yield('model')
     </div>
     <!--main-wrapper-->
+
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="{{asset('website/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('website/js/all.min.js')}}"></script>
     <script src="{{asset('website/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('website/js/wow.js')}}"></script>
     <script src="{{asset('website/js/jquery.easing.min.js')}}"></script>
+
+    <script src="{{asset('website/js/slick.min.js')}}"></script>
+    <script src="{{asset('website/js/jquery.zoom.js')}}"></script>
+    <script
+        src='https://wp.incredibbble.com/writsy-shop/wp-content/themes/writsy-shop/assets/vendor/jquery-zoom/jquery.zoom.min.js?ver=1.7.18'>
+    </script>
     <script src="{{asset('website/js/script.js')}}"></script>
     <script>
-        new WOW().init();
+    new WOW().init();
     </script>
-    <script>
-        $(document).on('click', 'input,select,textarea,.select2', function () {
-            $(this).attr('style', "").next('span.errorSpan').remove();//
-        });
-        var preventSubmit = false;
+    <script src="https://js.stripe.com/v3/"></script>
 
+    @yield('js')
+    @yield('script')
+    @livewireScripts
 
-        $(document).on('click', '#send', function (e) {
-            e.preventDefault();
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-            $(this).closest("#quoteForm").find('select, textarea, input').each(function () {
-                if ($(this).prop('required') && !$(this).val() && !$(this).is(":hidden")) {
-                    $(this).css("border", "#ff0000 solid 1px").next('span.errorSpan').remove(); //
-                    $(this).css("border", "#bd1616 solid 1px").after('<span style="color:#ffff00" class="errorSpan">{{__("web.requiredField")}}</span>');
-                    preventSubmit = true;
-                    e.preventDefault();
-                }
-            });
-            if (preventSubmit) {
-                preventSubmit = false;
-                return false;
-            }
+    <x-livewire-alert::scripts />
 
-            var form = $('#quoteForm');
-            $.ajax({
-                type: form.attr('method'),
-                headers: {'X-CSRF-TOKEN': '{{csrf_token()}}'},
-                url: form.attr('action'),
-                data: form.serialize(),
-                success: function (response) {
-                    if (response.status === true) {
-                        $('#modalSuccess').modal('show');
-                    } else {
-                        $.each(response.errors , function(key, val) {
-                            $('#quoteForm').find('input[type=text], input[type=email],input[type=password],input[type=number], input[type=radio], input[type=checkbox],select, textarea').each(function(){
-                                if ($(this).attr("name")===key && !$(this).is(":hidden")){
-                                    $(this).css("border", "#ff0000 solid 1px").next('span.errorSpan').remove(); //
-                                    $(this).css("border", "#bd1616 solid 1px").after('<span style="color:#ffff00 ; class="errorSpan">'+val+'</span>');
-                                    preventSubmit = true;
-                                    e.preventDefault();
-                                }
-                            })
-                        });
-                    }
-                },
-                error: function (jqXHR, error, errorThrown) {
-
-                }
-            });
-
-        });
-
-    </script>
-
-
+    <script src="{{ asset('vendor/livewire-alert/livewire-alert.js') }}"></script>
+    <x-livewire-alert::flash />
 </body>
+
+<script>
+$(".add_cart").click(function(e) {
+    alert(123)
+});
+</script>
 
 </html>

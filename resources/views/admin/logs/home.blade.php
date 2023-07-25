@@ -22,7 +22,7 @@
                 <!--begin::Info-->
                 <div class="d-flex align-items-center flex-wrap mr-1">
                     <div class="d-flex align-items-baseline mr-5">
-                        <h3>{{ucwords(__('cp.categories'))}}</h3>
+                        <h3>{{ucwords(__('cp.logs'))}}</h3>
                     </div>
                 </div>
                 <!--end::Info-->

@@ -1,0 +1,18 @@
+body {
+    font-family: 'Almarai', 'Kufam',  sans-seri;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Almarai', 'Kufam',  sans-seri;
+}
+.main_menu > li {
+    float: right;
+    margin-left: 25px;
+    margin-right: unset;
+}
+.main_menu > li:last-child {
+    margin-left: 0;
+}
+.list-contact li a svg {
+    margin-left: 10px;
+    margin-right: unset;
+}

@@ -69,10 +69,10 @@ class Kernel extends HttpKernel
         'localeSessionRedirect'   => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
         'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
         'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
-        
-         'LanguageSwitcher' => \App\Http\Middleware\LanguageSwitcher::class,
+
+        'LanguageSwitcher' => \App\Http\Middleware\LanguageSwitcher::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'subadmin' => \App\Http\Middleware\Subadmin::class,
-        
+
     ];
 }

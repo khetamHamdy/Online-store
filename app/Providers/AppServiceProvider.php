@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\Chat;
+use App\Services\CurrencyConverter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Setting;
@@ -26,7 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('currency_converter', function ($app) {
+            return new CurrencyConverter(config('services.currency_converter.api_key'));
+        });
     }
 
     /**

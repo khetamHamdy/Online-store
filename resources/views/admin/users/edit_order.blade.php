@@ -5,6 +5,12 @@
 
             <div class="card-header">
                 <h3 class="card-title">{{__('cp.edit_order')}}</h3>
+                <!--begin::Toolbar-->
+                <div class="d-flex align-items-center" style="margin-top: 40px">
+                    <a href="{{url(getLocal().'/admin/users/'.$item->id.'/orders')}}"
+                       class="btn btn-secondary  mr-2">{{__('cp.cancel')}}</a>
+                    <button id="submitButton" class="btn btn-success ">{{__('cp.save')}}</button>
+                </div>
             </div>
 
             <form method="post" action="{{url(app()->getLocale().'/admin/orders/'.$order->id)}}"
@@ -20,7 +26,8 @@
                                 <div class="form-group">
                                     <label>{{__('cp.status')}}</label>
                                     <select class="form-control form-control-solid"
-                                            name="status" @if($order->status == '4' || $order->status == '5') disabled @endif required>
+                                            name="status" @if($order->status == '4' || $order->status == '5') disabled
+                                            @endif required>
                                         <option
                                             value="1" {{$order->status == '1'?'selected':''}}>
                                             {{__('cp.confirmed')}}
@@ -53,7 +60,8 @@
                                     <label>{{__('cp.payment_method')}}</label>
                                     <input type="text" class="form-control form-control-solid"
                                            name="payment_method"
-                                           value="{{@$order->payment_method=='1'?__('cp.online'):__('cp.cache_on_pickup')}}" disabled/>
+                                           value="{{@$order->payment_method=='1'?__('cp.online'):__('cp.cache_on_pickup')}}"
+                                           disabled/>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -90,7 +98,8 @@
                                 <div class="form-group">
                                     <label>{{__('cp.customer_mobile')}}</label>
                                     <input type="text" class="form-control form-control-solid"
-                                           value="{{@$order->customer_mobile}}  {{@$order->customer_second_mobile?'-':''}} {{@$order->customer_second_mobile}}" disabled/>
+                                           value="{{@$order->customer_mobile}}  {{@$order->customer_second_mobile?'-':''}} {{@$order->customer_second_mobile}}"
+                                           disabled/>
                                 </div>
                             </div>
 
@@ -104,20 +113,14 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>{{__('cp.provider')}}</label>
-                                    <input type="text" class="form-control form-control-solid"
-                                           value="{{@$order->provider->name}}"
-                                           disabled/>
-                                </div>
-                            </div>
+
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>{{__('cp.payment_status')}}</label>
                                     <input type="text" class="form-control form-control-solid"
                                            name="payment_status"
-                                           value="{{@$order->payment_status==1 ?__('cp.payed') : __('cp.not_payed')}}" disabled/>
+                                           value="{{@$order->payment_status==1 ?__('cp.payed') : __('cp.not_payed')}}"
+                                           disabled/>
                                 </div>
                             </div>
                         </div>
@@ -130,17 +133,27 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>{{__('cp.total')}}</label>
+                                    <label>{{__('cp.ProductsTotal')}}</label>
                                     <input type="text" class="form-control form-control-solid"
-                                           value="{{@$order->sub_total}}" disabled/>
+                                           value="{{@$order->ProductsTotal}}" disabled/>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{__('cp.totalAll')}}</label>
+                                    <input type="text" class="form-control form-control-solid"
+                                           value="{{@$order->total}}" disabled/>
+                                </div>
+                                <div class="form-group">
+                                    <label>{{__('cp.DeliveryCharges')}}</label>
+                                    <input type="text" class="form-control form-control-solid"
+                                           value="{{@$order->DeliveryCharges}}" disabled/>
                                 </div>
                             </div>
-                            @if($order->discount > 0)
+                            @if($order->discount_price > 0)
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>{{__('cp.total_after_discount')}}</label>
                                         <input type="text" class="form-control form-control-solid"
-                                               value="{{@$order->total}}" disabled/>
+                                               value="{{@$order->discount_price}}" disabled/>
                                     </div>
                                 </div>
                             @endif
@@ -148,7 +161,7 @@
                     </div>
 
 
-                    @if($order->discount > 0)
+                    @if($order->discount_price > 0)
                         <div class="card-header col-md-12">
                             <h3 class="card-title">{{__('cp.discount')}}</h3>
                         </div>
@@ -158,14 +171,15 @@
                                     <div class="form-group">
                                         <label>{{__('cp.promo_code_name')}}</label>
                                         <input type="text" class="form-control form-control-solid"
-                                               value="{{@$order->promo_code_name}}" disabled/>
+                                               value="{{@$order->promo_code->promo_code_name}}" disabled/>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>{{__('cp.promo_code_amount')}}</label>
                                         <input type="text" class="form-control form-control-solid"
-                                               value="{{@$order->promo_code_amount}}  {{$order->promo_code_type==0 ? '%' : ''}}" disabled/>
+                                               value="{{@$order->promo_code->promo_code_amount}}  {{$order->promo_code->promo_code_type==0 ? '%' : ''}}"
+                                               disabled/>
                                     </div>
                                 </div>
 
@@ -173,7 +187,7 @@
                                     <div class="form-group">
                                         <label>{{__('cp.total_discount')}}</label>
                                         <input type="text" class="form-control form-control-solid"
-                                               value="{{@$order->discount}}" disabled/>
+                                               value="{{@$order->promo_code->discount}}" disabled/>
                                     </div>
                                 </div>
                             </div>
@@ -183,9 +197,9 @@
                     @endif
 
 
-                    @foreach($order->meals as $one)
+                    @foreach($order->items as $one)
                         <div class="card-header col-md-12">
-                            <h3 class="card-title">{{@$one->meal->title}}</h3>
+                            <h3 class="card-title">{{@$one->product->title}}</h3>
                         </div>
                         <div class="card-body">
 
@@ -201,14 +215,14 @@
                                     <div class="form-group">
                                         <label>{{__('cp.price')}}</label>
                                         <input type="text" class="form-control form-control-solid"
-                                               value="{{@$one->price}}" disabled/>
+                                               value="{{@$one->product->price}}" disabled/>
                                     </div>
                                 </div>
                             </div>
 
 
                             <div class="row">
-                                @if(count($one->extras) > 0)
+                                @if(count($one->product->extras) > 0)
                                     <div class="table-responsive col-md-6">
                                         <div class="form-group">
                                             <label>@lang('cp.extras')</label>
@@ -230,17 +244,18 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @forelse($one->extras as $extra)
+                                            @forelse($one->product->extras as $extra)
                                                 <tr class="odd gradeX" id="tr-{{$extra->id}}">
                                                     <td class="v-align-middle wd-5p">
                                                         <div class="checkbox-inline">
                                                             <label class="checkbox">
-                                                                <input type="checkbox" value="{{$one->id}}" class="checkboxes"
+                                                                <input type="checkbox" value="{{$one->id}}"
+                                                                       class="checkboxes"
                                                                        name="chkBox"/>
                                                                 <span></span></label>
                                                         </div>
                                                     </td>
-                                                    <td class="v-align-middle wd-25p">{{@$extra->extra->name}}</td>
+                                                    <td class="v-align-middle wd-25p">{{@$extra->name}}</td>
                                                     <td class="v-align-middle wd-25p">{{@$extra->price}}</td>
                                                     <td class="v-align-middle wd-25p">{{@$extra->quantity}}</td>
                                                 </tr>
@@ -259,65 +274,16 @@
                                     </div>
                                 @endif
 
-                                @if(count($one->options) > 0)
-                                    <div class="table-responsive col-md-6">
-                                        <div class="form-group">
-                                            <label>@lang('cp.options')</label>
-                                        </div>
-                                        <table class="table table-hover tableWithSearch" id="tableWithSearch">
-                                            <thead>
-                                            <tr>
-                                                <th class="wd-1p no-sort">
-                                                    <div class="checkbox-inline">
-                                                        <label class="checkbox">
-                                                            <input type="checkbox" name="checkAll"/>
-                                                            <span></span></label>
-                                                    </div>
-                                                </th>
-                                                <th class="wd-25p"> {{ucwords(__('cp.name'))}}</th>
-                                                <th class="wd-25p"> {{ucwords(__('cp.price'))}}</th>
-
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @forelse($one->options as $option)
-                                                <tr class="odd gradeX" id="tr-{{$option->id}}">
-                                                    <td class="v-align-middle wd-5p">
-                                                        <div class="checkbox-inline">
-                                                            <label class="checkbox">
-                                                                <input type="checkbox" value="{{$one->id}}" class="checkboxes"
-                                                                       name="chkBox"/>
-                                                                <span></span></label>
-                                                        </div>
-                                                    </td>
-                                                    <td class="v-align-middle wd-25p">{{@$option->option->name}}</td>
-                                                    <td class="v-align-middle wd-25p">{{@$option->option->price}}</td>
-                                                </tr>
-
-                                            @empty
-
-                                            @endforelse
-                                            </tbody>
-                                        </table>
-                                        {{--                                                                                {{$order->appends($_GET)->links("pagination::bootstrap-4") }}--}}
-                                    </div>
-                                @endif
+                        
                             </div>
 
                         </div>
 
-
                     @endforeach
 
-
                 </div>
 
 
-                <!--begin::Toolbar-->
-                <div class="d-flex align-items-center" style="margin-top: 40px">
-                    <a href="{{url(getLocal().'/admin/users/'.$item->id.'/orders')}}" class="btn btn-secondary  mr-2">{{__('cp.cancel')}}</a>
-                    <button id="submitButton" class="btn btn-success ">{{__('cp.save')}}</button>
-                </div>
                 <!--end::Toolbar-->
                 <button type="submit" id="submitForm" style="display:none"></button>
             </form>

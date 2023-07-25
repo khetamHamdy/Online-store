@@ -78,6 +78,7 @@ class ContactController extends Controller
         $item = Contact::where('id',$id)->first();
         $item->is_read = $request->is_read;
         $item->save();
+        activity()->causedBy(auth('admin')->user())->log(' تواصل مع جهة اتصال ');
         return redirect()->back()->with('status', __('cp.update'));
     }
 

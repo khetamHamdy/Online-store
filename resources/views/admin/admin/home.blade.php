@@ -1,12 +1,11 @@
 @extends('layout.adminLayout')
-@section('title') {{ucwords(__('cp.admins'))}}
+@section('title')
+    {{ucwords(__('cp.admins'))}}
 @endsection
 @section('css')
 
 @endsection
 @section('content')
-
-
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Subheader-->
@@ -24,15 +23,18 @@
 
                 <div>
                     <div class="btn-group mb-2 m-md-3 mt-md-0 ml-2 ">
-                        <button type="button" class="btn btn-secondary" href="#activation" role="button"  data-toggle="modal">
+                        <button type="button" class="btn btn-secondary" href="#activation" role="button"
+                                data-toggle="modal">
                             <i class="icon-xl la la-check"></i>
                             <span>{{__('cp.activation')}}</span>
                         </button>
-                        <button type="button" class="btn btn-secondary" href="#cancel_activation" role="button"  data-toggle="modal">
+                        <button type="button" class="btn btn-secondary" href="#cancel_activation" role="button"
+                                data-toggle="modal">
                             <i class="icon-xl la la-ban"></i>
                             <span>{{__('cp.cancel_activation')}}</span>
                         </button>
-                        <button type="button" class="btn btn-secondary" href="#deleteAll" role="button" data-toggle="modal">
+                        <button type="button" class="btn btn-secondary" href="#deleteAll" role="button"
+                                data-toggle="modal">
                             <i class="flaticon-delete"></i>
                             <span>{{__('cp.delete')}}</span>
                         </button>
@@ -56,35 +58,44 @@
                 <div class="gutter-b example example-compact">
 
                     <div class="contentTabel">
-                        <button  type="button" class="btn btn-secondar btn--filter mr-2"><i class="icon-xl la la-sliders-h"></i>{{__('cp.filter')}}</button>
-                        <div class="container box-filter-collapse" >
-                            <div class="card" >
+                        <button type="button" class="btn btn-secondar btn--filter mr-2"><i
+                                class="icon-xl la la-sliders-h"></i>{{__('cp.filter')}}</button>
+                        <div class="container box-filter-collapse">
+                            <div class="card">
                                 <form class="form-horizontal" method="get" action="{{url(getLocal().'/admin/admins')}}">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="control-label">{{__('cp.name')}}</label>
-                                                <input type="text" value="{{request('name')?request('name'):''}}" class="form-control" name="name" placeholder="{{__('cp.name')}}">
+                                                <input type="text" value="{{request('name')?request('name'):''}}"
+                                                       class="form-control" name="name" placeholder="{{__('cp.name')}}">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="control-label">{{__('cp.email')}}</label>
-                                                <input type="text" class="form-control" value="{{request('email')?request('email'):''}}" name="email" placeholder="{{__('cp.email')}}">
+                                                <input type="text" class="form-control"
+                                                       value="{{request('email')?request('email'):''}}" name="email"
+                                                       placeholder="{{__('cp.email')}}">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="control-label">{{__('cp.mobile')}}</label>
-                                                <input value="{{request('mobile')?request('mobile'):''}}" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"  type="text" class="form-control" name="mobile" placeholder="{{__('cp.mobile')}}">
+                                                <input value="{{request('mobile')?request('mobile'):''}}"
+                                                       onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"
+                                                       type="text" class="form-control" name="mobile"
+                                                       placeholder="{{__('cp.mobile')}}">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <button type="submit" class="btn sbold btn-default btnSearch">{{__('cp.search')}}
+                                            <button type="submit"
+                                                    class="btn sbold btn-default btnSearch">{{__('cp.search')}}
                                                 <i class="fa fa-search"></i>
                                             </button>
 
-                                            <a href="{{url(app()->getLocale().'/admin/admins')}}" type="submit" class="btn sbold btn-default btnRest">{{__('cp.reset')}}
+                                            <a href="{{url(app()->getLocale().'/admin/admins')}}" type="submit"
+                                               class="btn sbold btn-default btnRest">{{__('cp.reset')}}
                                                 <i class="fa fa-refresh"></i>
                                             </a>
                                         </div>
@@ -92,7 +103,8 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="card-header d-flex flex-column flex-sm-row align-items-sm-start justify-content-sm-between">
+                        <div
+                            class="card-header d-flex flex-column flex-sm-row align-items-sm-start justify-content-sm-between">
                             <div>
 
 
@@ -106,12 +118,12 @@
                                     <th class="wd-1p no-sort">
                                         <div class="checkbox-inline">
                                             <label class="checkbox">
-                                                <input type="checkbox" name="checkAll" />
+                                                <input type="checkbox" name="checkAll"/>
                                                 <span></span></label>
                                         </div>
                                     </th>
 
-                                <!--{{--                                                        <th class="wd-5p"> {{ucwords(__('cp.image'))}}</th>--}}-->
+                                    <!--{{--                                                        <th class="wd-5p"> {{ucwords(__('cp.image'))}}</th>--}}-->
                                     <th class="wd-25p"> {{ucwords(__('cp.name'))}}</th>
                                     <th class="wd-25p"> {{ucwords(__('cp.email'))}}</th>
                                     <th class="wd-25p"> {{ucwords(__('cp.mobile'))}}</th>
@@ -120,13 +132,14 @@
                                     <th class="wd-15p"> {{ucwords(__('cp.action'))}}</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="t_data">
                                 @forelse($items as $one)
                                     <tr class="odd gradeX" id="tr-{{$one->id}}">
                                         <td class="v-align-middle wd-5p">
                                             <div class="checkbox-inline">
                                                 <label class="checkbox">
-                                                    <input type="checkbox" value="{{$one->id}}" class="checkboxes" name="chkBox" />
+                                                    <input type="checkbox" value="{{$one->id}}" class="checkboxes"
+                                                           name="chkBox"/>
                                                     <span></span></label>
                                             </div>
                                         </td>
@@ -136,7 +149,7 @@
                                         <td class="v-align-middle wd-25p">{{$one->name}}</td>
                                         <td class="v-align-middle wd-25p">{{$one->email}}</td>
                                         <td class="v-align-middle wd-25p">{{$one->mobile}}</td>
-                                        <td class="v-align-middle wd-10p" > <span id="label-{{$one->id}}" class="badge badge-pill badge-{{($one->status == "active")
+                                        <td class="v-align-middle wd-10p"> <span id="label-{{$one->id}}" class="badge badge-pill badge-{{($one->status == "active")
                                             ? "info" : "danger"}}" id="label-{{$one->id}}">
 
                                             {{__('cp.'.$one->status)}}
@@ -150,7 +163,9 @@
                                                class="btn btn-sm btn-clean btn-icon" title="{{__('cp.edit')}}">
                                                 <i class="la la-edit"></i>
                                             </a>
-                                            <a href="{{url(getLocal().'/admin/admins/'.$one->id.'/edit_password')}}" class="btn btn-sm btn-clean btn-icon" title="{{__('cp.Change_Password')}}">
+                                            <a href="{{url(getLocal().'/admin/admins/'.$one->id.'/edit_password')}}"
+                                               class="btn btn-sm btn-clean btn-icon"
+                                               title="{{__('cp.Change_Password')}}">
                                                 <i class="la la-key"></i>
                                             </a>
 
@@ -163,7 +178,7 @@
 
                                 </tbody>
                             </table>
-{{--                            {{$items->appends($_GET)->links("pagination::bootstrap-4") }}--}}
+                            {{--                            {{$items->appends($_GET)->links("pagination::bootstrap-4") }}--}}
                         </div>
 
 
@@ -180,7 +195,43 @@
 @section('js')
 
 @endsection
+{{--@section('script')--}}
+{{--    <script>--}}
+{{--        var table = $('.table').DataTable({--}}
+{{--            ajax: "data.json"--}}
+{{--        });--}}
 
-@section('script')
 
-@endsection
+{{--        $(document).on('click', '.btnSearch', function (e) {--}}
+{{--            table.ajax.reload();--}}
+{{--            });--}}
+{{--            $(document).on('click', '.btnSearch', function (e) {--}}
+{{--                e.preventDefault();--}}
+{{--                var name = $("input[name=name]").val();--}}
+{{--                var phone = $("input[name=mobile]").val();--}}
+{{--                var email = $("input[name=email]").val();--}}
+{{--                var url = '{{url(getLocal().'/admin/admins')}}';--}}
+
+{{--                if (name == '' && phone == '' && email == '' && messages == '') {--}}
+{{--                    swal("Warning!", "Please Input To Date field", "info");--}}
+{{--                }--}}
+{{--                ;--}}
+{{--                $.ajax({--}}
+{{--                    url: url,--}}
+{{--                    method: 'GET',--}}
+{{--                    data: {--}}
+{{--                        name: name,--}}
+{{--                        mobile: phone,--}}
+{{--                        email: email,--}}
+
+{{--                    },--}}
+{{--                    success: function (response) {--}}
+{{--                    },--}}
+{{--                    error: function (error) {--}}
+{{--                        console.log(error)--}}
+{{--                    }--}}
+{{--                });--}}
+{{--            });--}}
+
+{{--    </script>--}}
+{{--@endsection--}}

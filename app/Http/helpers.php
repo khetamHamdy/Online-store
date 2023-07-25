@@ -143,7 +143,7 @@ function refund($amount,$paymentId, $SupplierCode){
             'SupplierDeductedAmount' => $amount,
            ]
         ],
-        
+
         //Fill optional Data
         //"RefundChargeOnCustomer"  => false,
         //"ServiceChargeOnCustomer" => false,
@@ -187,7 +187,8 @@ function updateProviderOrdersFirebaseNotification($type,$target,$value=1){
 
 function getUserPermissionOnStore($store_id){
     if(auth('api')->check() && auth('api')->user()->type == 2){
-        $position = StoreUsers::where(['status'=>'active','store_id'=>$store_id,'user_id'=>auth('api')->user()->id])->first();
+        $position = StoreUsers::where(['status'=>'active','store_id'=>$store_id,
+        'user_id'=>auth('api')->user()->id])->first();
         if($position){
            return $position->position_id;
         }
@@ -337,7 +338,7 @@ function sendNotificationToUsers($tokens,$msgType="1", $target_id , $title='Yamm
                     'type' => "notify",
                     'title' => $title,
                     'target_id' => $target_id, // order_id or user_id
-                    'msgType' => $msgType,//1=>msg , 2=>order 
+                    'msgType' => $msgType,//1=>msg , 2=>order
                     'badge' => 1,
                     "click_action" => 'FLUTTER_NOTIFICATION_CLICK',
                     'icon' => 'myicon',//Default Icon
@@ -348,7 +349,7 @@ function sendNotificationToUsers($tokens,$msgType="1", $target_id , $title='Yamm
                     'type' => "notify",
                     'title' => 'Yammk',
                     'target_id' => $target_id, // order_id or user_id
-                    'msgType' => $msgType,//1=>msg , 2=>order 
+                    'msgType' => $msgType,//1=>msg , 2=>order
                     'badge' => 1,
                     "click_action" => 'FLUTTER_NOTIFICATION_CLICK',
                     'icon' => 'myicon',//Default Icon
@@ -363,9 +364,12 @@ function sendNotificationToUsers($tokens,$msgType="1", $target_id , $title='Yamm
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
             $result = curl_exec($ch);
+            if ($result === FALSE) {
+                die('Curl failed: ' . curl_error($ch));
+            } 
             curl_close($ch);
-            // $resultOfPushToIOS = "Done";
-            //   return $result; // to check does the notification sent or not
+            //$resultOfPushToIOS = "Done";
+              return $result; // to check does the notification sent or not
         }
 
     } catch (\Exception $ex) {
@@ -472,4 +476,3 @@ function get_center($coords){
 
     return number_format($lat * 180 / pi(),6).','.number_format($lon * 180 / pi(),6);
 }
-

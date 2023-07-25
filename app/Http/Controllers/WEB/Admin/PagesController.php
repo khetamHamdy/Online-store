@@ -11,9 +11,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Image;
 use Illuminate\Support\Facades\Route;
+use App\Traits\imageTrait;
 
 class PagesController extends Controller
 {
+    use imageTrait;
     public function __construct()
     {
         view()->share([
@@ -70,20 +72,25 @@ class PagesController extends Controller
         $locales = Language::all()->pluck('lang');
 
         foreach ($locales as $locale) {
-//            $roles['title_' . $locale] = 'required';
+            $roles['title_' . $locale] = 'required';
             $roles['description_' . $locale] = 'required';
         }
 
         $this->validate($request, $roles);
 
         foreach ($locales as $locale) {
-//            $page->translate($locale)->title = $request->get('title_' . $locale);
             $page->translate($locale)->description = $request->get('description_' . $locale);
+            $page->translate($locale)->title = $request->get('title_' . $locale);
+        }
+
+        if ($request->hasFile('image')) {
+            $page->image =  $this->storeImage( $request->file('image'), 'pages',$page->getRawOriginal('image'));
         }
 
         if ($page->save()) {
             return redirect()->back()->with('status', __('cp.update'));
         }
+        activity()->causedBy(auth('admin')->user())->log('تعديل الصفحة ');
         return redirect()->back()->withErrors('errors', ['Page not updated']);
     }
 

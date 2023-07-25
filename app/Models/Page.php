@@ -22,7 +22,7 @@ class Page extends Model
 
 
 
-    public $translatedAttributes = ['title', 'description'];
+    public $translatedAttributes = ['title', 'description','get_familiarize','our_vision','our_mission'];
     protected $hidden=['translations','updated_at','deleted_at'];
 
 
@@ -30,9 +30,9 @@ class Page extends Model
     protected $fillable = ['image'];
 
 
-    public function getImageAttribute($value)
+    public function getImageAttribute($image)
     {
-        return !is_null($value) ? url('uploads/pages/' . $value) : url('uploads/images/d.png');
+        return !is_null($image) ? url('uploads/pages/' . $image) : url('uploads/images/d.png');
     }
 
     public function getSecondImageAttribute($value)
@@ -40,15 +40,20 @@ class Page extends Model
         return !is_null($value) ? url('uploads/pages/' . $value) : url('uploads/images/d.png');
     }
 
-    public function getOurVisionImageAttribute($value)
+    public function getVisionImageAttribute($value)
     {
         return !is_null($value) ? url('uploads/pages/' . $value) : url('uploads/images/d.png');
     }
 
-    public function getOurMissionImageAttribute($value)
+    public function getMissionImageAttribute($value)
     {
         return !is_null($value) ? url('uploads/pages/' . $value) : url('uploads/images/d.png');
     }
+    public function getFamiliarizeImageAttribute($value)
+    {
+        return !is_null($value) ? url('uploads/pages/' . $value) : url('uploads/images/d.png');
+    }
+
 
 }
 

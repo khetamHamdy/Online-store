@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [5.26.4]
+### Fixed
+* When trying to work with unknown FCM tokens, errors returned from the Messaging REST API were not passed to the
+  `NotFound` exception, which prevented the inspection of further details.
+  (backported from [#760](https://github.com/kreait/firebase-php/pull/760))
+
 ## [5.26.3]
 ### Fixed
 * Updating a Realtime Database Ruleset converted lists to objects with numeric keys.
@@ -344,7 +350,8 @@ to upgrade from a 4.x release to 5.0 without changes to your code.**
 * Support for PHP `<7.2`
 * Deprecated methods and classes
 
-[Unreleased]: https://github.com/kreait/firebase-php/compare/5.26.3...5.x
+[Unreleased]: https://github.com/kreait/firebase-php/compare/5.26.4...5.x
+[5.26.4]: https://github.com/kreait/firebase-php/compare/5.26.3...5.26.4
 [5.26.3]: https://github.com/kreait/firebase-php/compare/5.26.2...5.26.3
 [5.26.2]: https://github.com/kreait/firebase-php/compare/5.26.1...5.26.2
 [5.26.1]: https://github.com/kreait/firebase-php/compare/5.26.0...5.26.1

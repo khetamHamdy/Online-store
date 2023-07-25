@@ -44,9 +44,9 @@ The package offers the following:
  4.2.x        | 0.15.x
  5.0.x/5.1.x  | 1.0.x
  5.2.x-5.4.x (PHP 7 not required)  | 1.2.x
- 5.2.x-5.8.x (PHP 7 required) | 1.3.x
- 5.2.0-6.x (PHP 7 required) | 1.4.x
- 5.2.0-9.x (PHP 7 required) | 1.7.x
+ 5.2.x-5.8.x (PHP version >= 7 required) | 1.3.x
+ 5.2.0-6.x (PHP version >= 7 required) | 1.4.x
+ 5.2.0-9.x (PHP version >= 7 required) | 1.7.x
 
 ## Installation
 
@@ -175,7 +175,7 @@ and `useAcceptLanguageHeader` in `config/laravellocalization.php`:
 
 Whenever a locale is present in the url, it will be stored in the session by this middleware.
 
-In there is no locale present in the url, then this middleware will check the following
+If there is no locale present in the url, then this middleware will check the following
 
  - If no locale is saved in session and `useAcceptLanguageHeader` is set to true, compute locale from browser and redirect to url with locale.
  - If a locale is saved in session redirect to url with locale, unless its the default locale and `hideDefaultLocaleInURL` is set to true.
@@ -294,6 +294,13 @@ Return current locale's native name as string (English/Español/عربى/ ..etc)
 
 ```php
 {{ LaravelLocalization::getCurrentLocaleNative() }}
+```
+
+### Get Current Locale Regional Name
+Return current locale's regional name as string (en_GB/en_US/fr_FR/ ..etc).
+
+```php
+{{ LaravelLocalization::getCurrentLocaleRegional() }}
 ```
 
 ### Get Current Locale Direction
@@ -509,7 +516,7 @@ will not work. Instead, one has to use
 ```
 
 
-Another way to solve this is to put http method to config to 'laravellocalization.httpMethodsIgnored' 
+Another way to solve this is to put http method to config to 'laravellocalization.httpMethodsIgnored'
 to prevent of processing this type of requests
 
 ### MethodNotAllowedHttpException
@@ -543,7 +550,7 @@ protected function refreshApplicationWithLocale($locale)
     self::setUp();
 }
 
-protected function tearDown()
+protected function tearDown(): void
 {
     putenv(LaravelLocalization::ENV_ROUTE_KEY);
     parent::tearDown();

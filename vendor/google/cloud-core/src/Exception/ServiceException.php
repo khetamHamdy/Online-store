@@ -57,13 +57,13 @@ class ServiceException extends GoogleException
     /**
      * Handle previous exceptions differently here.
      *
-     * @param string $message
+     * @param string|null $message
      * @param int $code
      * @param Exception|null $serviceException
      * @param array $metadata [optional] Exception metadata.
      */
     public function __construct(
-        $message,
+        $message = null,
         $code = 0,
         Exception $serviceException = null,
         array $metadata = []
@@ -74,7 +74,7 @@ class ServiceException extends GoogleException
         $this->errorInfoMetadata = null;
         $this->errorReason = null;
 
-        parent::__construct($message, $code);
+        parent::__construct($message ?: '', $code);
     }
 
     /**
@@ -153,6 +153,26 @@ class ServiceException extends GoogleException
         return $this->errorReason;
     }
 
+    /**
+     * Return the delay in seconds and nanos before retrying the failed request.
+     *
+     * @return array
+     */
+    public function getRetryDelay()
+    {
+        $metadata = array_filter($this->metadata, function ($metadataItem) {
+            return array_key_exists('retryDelay', $metadataItem);
+        });
+
+        if (count($metadata) === 0) {
+            return ['seconds' => 0, 'nanos' => 0];
+        }
+
+        return $metadata[0]['retryDelay'] + [
+            'seconds' => 0,
+            'nanos' => 0
+        ];
+    }
 
     /**
      * Helper to return the error info from an exception

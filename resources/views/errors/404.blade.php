@@ -5,21 +5,24 @@
 
 @section('content')
 
-<section class="section_not_found">
-		    <div class="container">
-                <div class="cont-not-found">
-                    <div class="thumb-not-found wow fadeInUp">
-                        <figure><img src="{{asset('website/images/404.png')}}" alt="Images 404" /></figure>
-                    </div>
-                    <div class="txt-not-found wow fadeInUp">
-                        <strong>404</strong>
-                        <h5>{{__('web.PageNotFound')}} !</h5>
-                        <p>{{__('web.we’re sorry, the page you requested could not be found.Please go back')}}. </p>
-                        <a href="{{route('home')}}" class="btn-site"><span>{{__('web.GoBack')}}</span></a>
-                    </div>
+    <section class="section_page_site">
+        <div class="container">
+            <div class="cont-not-found">
+                <div class="thumb-not-found wow fadeInUp">
+                    <figure><img src="{{asset('website/images/logo-color.png')}}" alt="Images 404" /></figure>
                 </div>
-		    </div>
-		</section>
+                <div class="txt-not-found wow fadeInUp">
+                    <h5>PAGE NOT FOUND</h5>
+                    <p>Ut Porta Ultricies Mauris Varius Congue. Sed At Orci Tempor, Molestie Nisl Sed, Efficitur Massa. Etiam Eros Nisl, Finibus At Molestie Et, Sodales Nec Lorem. Aliquam Maximus, Sem Laoreet Porttitor Pellentesque, Eros Ipsum Aliquam Odio, Non Blandit Diam Metus Id Tellus. Proin Vestibulum Nunc Erat, A Ultrices Velit Vehicula Et. Mauris Tristique Arcu Turpis, At Posuere Massa </p>
+                    <a href="" class="btn-site-other"><span>Go Back</span></a>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+    </section>
+    <!--section_page_site-->
 @endsection
 
 @section('script')

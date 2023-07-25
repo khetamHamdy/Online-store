@@ -1,0 +1,70 @@
+@media screen and (max-width: 1199px) {}
+
+@media screen and (max-width: 991px) {
+    #header {
+        position: fixed;
+        top: 0;
+    }
+
+    #header .container {
+        justify-content: center;
+    }
+
+    .opt-mobail {
+        display: block;
+    }
+    
+    .opt-mobail .lang-site {
+        display: block
+    }
+    
+    .main_menu {
+        display: none;
+    }
+
+    .logo-mobail {
+        display: block
+    }
+
+    .logo-site img {
+        max-width: 160px;
+    }
+    
+    .main_menu {
+        position: absolute;
+        width: 100%;
+        top: 82px;
+        left: 0;
+        background: #fff;
+        box-shadow: 0 6px 7px rgb(0 0 0 / 16%);
+        padding-bottom: 20px;
+        border-radius: 0;
+    }
+    .main_menu li {
+        display: block;
+        float: inherit;
+        padding: 10px 20px;
+    }
+    .lang-site {
+        display: block;
+    }
+    .logo-site, .deliver-hd a {
+        display: none;
+    }
+    
+    .top-footer, .copyRight  {
+        display: none;
+    }
+    
+    .cont-bt {
+        justify-content: center;
+    }
+    .search-hd {
+        margin: 0 0 0 30px;
+    }
+    
+}
+
+@media screen and (max-width: 767px) {}
+
+@media screen and (max-width: 500px) {}

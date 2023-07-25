@@ -1,8 +1,8 @@
 <?php
 
-
 namespace App\Traits;
-use Intervention\Image\Facades\Image;
+use Image;
+use Illuminate\Support\Facades\File;
 
 trait imageTrait
 {
@@ -10,15 +10,21 @@ trait imageTrait
         if ($image) {
             $extention = $image->getClientOriginalExtension();
             $image_name = str_random(15) . "" . rand(1000000, 9999999) . "" . time() . "_" . rand(1000000, 9999999) . "." . $extention;
+           if (! File::exists("uploads/$fileName")) {
+                    File::makeDirectory("uploads/$fileName");
+                }
             if($height == null){
                 Image::make($image)->resize($width , $height ,function ($constraint) {
                     $constraint->aspectRatio();
-                })->save("uploads/images/$fileName/$image_name");
+                })->save("uploads/$fileName/$image_name");
                 if($oldImageName != null){
-                    unlink('uploads/images/'.$fileName.'/'.$oldImageName);
+                    unlink('uploads/'.$fileName.'/'.$oldImageName);
                 }
             }else{
                 Image::make($image)->resize($width , $height)->save("uploads/$fileName/$image_name");
+                if($oldImageName != null){
+                    unlink('uploads/'.$fileName.'/'.$oldImageName);
+                }
             }
             return $image_name;
         }else{

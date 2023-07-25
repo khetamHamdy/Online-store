@@ -2,6 +2,7 @@
 
 
 namespace App\Http\Controllers\WEB\Admin;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Response;
@@ -15,6 +16,7 @@ use App\Models\Role;
 use App\Models\Permission;
 use App\Models\RolePermission;
 use Illuminate\Support\Facades\Route;
+
 class RolesController extends Controller
 {
     /**
@@ -32,38 +34,39 @@ class RolesController extends Controller
 
         ]);
 
-                 $route=Route::currentRouteAction();
-         $route_name = substr($route, strpos($route, "@") + 1);
-         $this->middleware(function ($request, $next) use($route_name){
-         if(can('roles')){
-            return $next($request);
-         }
-          if($route_name== 'index' ){
-             if(can(['roles-show' , 'roles-create' , 'roles-edit' , 'roles-delete'])){
-                 return $next($request);
-             }
-          }elseif($route_name== 'create' || $route_name== 'store'){
-              if(can('roles-create')){
-                 return $next($request);
-             }
-          }elseif($route_name== 'edit' || $route_name== 'update'){
-              if(can('roles-edit')){
-                 return $next($request);
-             }
-          }elseif($route_name== 'destroy' || $route_name== 'delete'){
-              if(can('roles-delete')){
-                 return $next($request);
-             }
-          }else{
-              return $next($request);
-          }
-          return redirect()->back()->withErrors(__('cp.you_dont_have_premession'));
+        $route = Route::currentRouteAction();
+        $route_name = substr($route, strpos($route, "@") + 1);
+        $this->middleware(function ($request, $next) use ($route_name) {
+            if (can('roles')) {
+                return $next($request);
+            }
+            if ($route_name == 'index') {
+                if (can(['roles-show', 'roles-create', 'roles-edit', 'roles-delete'])) {
+                    return $next($request);
+                }
+            } elseif ($route_name == 'create' || $route_name == 'store') {
+                if (can('roles-create')) {
+                    return $next($request);
+                }
+            } elseif ($route_name == 'edit' || $route_name == 'update') {
+                if (can('roles-edit')) {
+                    return $next($request);
+                }
+            } elseif ($route_name == 'destroy' || $route_name == 'delete') {
+                if (can('roles-delete')) {
+                    return $next($request);
+                }
+            } else {
+                return $next($request);
+            }
+            return redirect()->back()->withErrors(__('cp.you_dont_have_premession'));
         });
     }
+
     public function index()
     {
         //
-        $items = Role::orderBy('id','desc')->paginate(30);
+        $items = Role::orderBy('id', 'desc')->paginate(30);
 
         return view('admin.roles.home', [
             'items' => $items,
@@ -77,16 +80,16 @@ class RolesController extends Controller
      */
     public function create()
     {
-        $permissions=Permission::get();
-         return view('admin.roles.create',[
-             'permissions'=>$permissions
-             ]);
+        $permissions = Permission::get();
+        return view('admin.roles.create', [
+            'permissions' => $permissions
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -105,18 +108,17 @@ class RolesController extends Controller
         $this->validate($request, $roles);
 
 
-        $item= new Role();
+        $item = new Role();
 
-        foreach ($locales as $locale)
-        {
+        foreach ($locales as $locale) {
             $item->translateOrNew($locale)->name = $request->get('name_' . $locale);
         }
 
-         $item->save();
+        $item->save();
 
 
-       if($request->permissions != null){
-            foreach($request->permissions as $permission){
+        if ($request->permissions != null) {
+            foreach ($request->permissions as $permission) {
                 $values[] = [
                     'role_id' => $item->id,
                     'permission_id' => $permission,
@@ -126,8 +128,7 @@ class RolesController extends Controller
             RolePermission::insert($values);
 
         }
-
-
+        activity()->causedBy(auth('admin')->user())->log('إضافة القيود جديد');
 
         return redirect()->back()->with('status', __('cp.create'));
 
@@ -136,7 +137,7 @@ class RolesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -148,24 +149,24 @@ class RolesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $permissions=Permission::get();
+        $permissions = Permission::get();
         $item = Role::with('permissions')->findOrFail($id);
-         return view('admin.roles.edit', [
+        return view('admin.roles.edit', [
             'item' => $item,
             'permissions' => $permissions,
-         ]);
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -173,7 +174,7 @@ class RolesController extends Controller
 
         $roles = [
             'permissions' => 'required',
-         ];
+        ];
         $locales = Language::all()->pluck('lang');
         foreach ($locales as $locale) {
             $roles['name_' . $locale] = 'required';
@@ -183,33 +184,32 @@ class RolesController extends Controller
 
         $item = Role::query()->findOrFail($id);
 
-        foreach ($locales as $locale)
-        {
+        foreach ($locales as $locale) {
             $item->translateOrNew($locale)->name = $request->get('name_' . $locale);
         }
-         $item->save();
+        $item->save();
 
-              if($request->permissions != null){
-            foreach($request->permissions as $permission){
+        if ($request->permissions != null) {
+            foreach ($request->permissions as $permission) {
                 $values[] = [
                     'role_id' => $item->id,
                     'permission_id' => $permission,
 
                 ];
             }
-            RolePermission::where('role_id' , $item->id)->delete();
+            RolePermission::where('role_id', $item->id)->delete();
             RolePermission::insert($values);
 
         }
-
-
+        activity()->causedBy(auth('admin')->user())->log('تعديل القيود');
 
         return redirect()->back()->with('status', __('cp.update'));
     }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

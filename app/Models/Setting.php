@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
    use Translatable;
-    public $translatedAttributes = ['working_times','address','key_words'];
+    public $translatedAttributes = ['Delivery_company_name','title','description_contact'];
     public $guarded = [];
     protected $hidden=['translations','updated_at','deleted_at'];
 
@@ -17,18 +17,15 @@ class Setting extends Model
         return !is_null($logo)?url('uploads/settings/'.$logo):null;
     }
 
-
     public function getProjectsCoverAttribute($logo)
     {
         return !is_null($logo)?url('uploads/settings/'.$logo):null;
     }
 
-
     public function getContactCoverAttribute($logo)
     {
         return !is_null($logo)?url('uploads/settings/'.$logo):null;
     }
-
 
     public function getLoginImageAttribute($logo)
     {
@@ -37,6 +34,10 @@ class Setting extends Model
     public function getFaviconAttribute($favicon)
     {
         return !is_null($favicon)?url('uploads/settings/'.$favicon):null;
+    }
+    public function getAppLogoAttribute($app_logo)
+    {
+        return !is_null($app_logo)?url('uploads/settings/'.$app_logo):null;
     }
 
 
